@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import {exec} from 'child_process';
 
-let DEBUG = true;
+let DEBUG = false;
 let checkConnectivity = false;
 let interval: NodeJS.Timeout | null = null;
 
@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
 				var diff = (now - lastCheck) / 1000;
 				log(`${diff} secs since last update`);
 				if(diff > getConfig<number>('assumeDisconnectedMinutes') * 60) {
-					log('Timeout hit!');
+					console.log('Timeout hit! Will check connectivity');
 					checkConnectivity = true;
 				}
 				lastCheck = now;
@@ -39,9 +39,10 @@ export function activate(context: vscode.ExtensionContext) {
 			let ping = exec(getConfig<string>('checkConnectivityCommand'));
 			ping.on('close', (code) => {
 				if (code === 0) {
+					console.log('Reloading');
 					vscode.commands.executeCommand('workbench.action.reloadWindow');
 				}
-				log(`Connectivity check command exited with code ${code}`);
+				console.log(`Connectivity check command exited with code ${code}`);
 			});
 		}, 2000);
 	} else if (vscode.env.remoteName) {

@@ -1,5 +1,5 @@
 {
-  "name": "remreload",
+	"name": "remreload",
 	"displayName": "Remreload",
 	"description": "Automatically reload remote SSH window on timeout",
 	"version": "0.0.1",
@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-    "onStartupFinished"
+		"onStartupFinished"
 	],
 	"main": "./out/extension.js",
 	"extensionKind": [
@@ -22,7 +22,7 @@
 				"title": "Remreload",
 				"properties": {
 					"remreload.assumeDisconnectedMinutes": {
-						"type":"number",
+						"type": "number",
 						"default": 60,
 						"description": "Remreload periodically checks if VSCode has been asleep. If the time since the last check exceeds this many minutes, we will assume VSCode's remote SSH connection has timed out."
 					},
@@ -35,6 +35,12 @@
 			}
 		]
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/viveksjain/remreload.git"
+	},
+	"icon": "icon.png",
+	"license": "MIT",
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
