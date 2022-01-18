@@ -8,7 +8,7 @@ let checkConnectivity = false;
 let interval: NodeJS.Timeout | null = null;
 
 function log(msg: string) {
-	if (DEBUG) {
+	if (getConfig<boolean>("debugLogging")) {
 		console.log(msg);
 	}
 }
