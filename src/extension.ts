@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 		interval = setInterval(() => {
 			if (!checkConnectivity) {
 				var now = Date.now();
-				var diff = (now - lastCheck) / 1000;
+				var diff = Math.round((now - lastCheck) / 1000);
 				log(`${diff} secs since last update`);
 				if(diff > getConfig<number>('assumeDisconnectedMinutes') * 60) {
 					console.log('Timeout hit! Will check connectivity');
