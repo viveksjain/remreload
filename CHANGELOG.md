@@ -1,9 +1,10 @@
 # Change Log
 
-All notable changes to the "autoreload" extension will be documented in this file.
+## [0.0.2]
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+ - Output logs to a new output channel.
+ - Change default Assume Disconnected Minutes from 60 to 20.
 
-## [Unreleased]
+## [0.0.1]
 
 - Initial release

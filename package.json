@@ -2,7 +2,7 @@
 	"name": "remreload",
 	"displayName": "Remreload",
 	"description": "Automatically reload remote SSH window on timeout",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.62.0"
 	},
@@ -23,18 +23,13 @@
 				"properties": {
 					"remreload.assumeDisconnectedMinutes": {
 						"type": "number",
-						"default": 60,
+						"default": 20,
 						"description": "Remreload periodically checks if VSCode has been asleep. If the time since the last check exceeds this many minutes, we will assume VSCode's remote SSH connection has timed out."
 					},
 					"remreload.checkConnectivityCommand": {
 						"type": "string",
 						"default": "ping -c 1 google.com",
 						"markdownDescription": "After _Assume Disconnected Minutes_ is hit, most likely the computer is waking from sleep and needs some time to reconnect to the network and possibly VPN. Remreload waits until this command returns success before triggering window reload."
-					},
-					"remreload.debugLogging": {
-						"type": "boolean",
-						"default": false,
-						"description": "Enable debug logging with console.log."
 					}
 				}
 			}

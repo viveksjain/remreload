@@ -1,16 +1,14 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {exec} from 'child_process';
+import { exec } from 'child_process';
 
-let DEBUG = false;
 let checkConnectivity = false;
 let interval: NodeJS.Timeout | null = null;
+let outputChannel: vscode.OutputChannel;
 
 function log(msg: string) {
-	if (getConfig<boolean>("debugLogging")) {
-		console.log(msg);
-	}
+	outputChannel.appendLine(msg);
 }
 
 function getConfig<T>(key: string): T {
@@ -20,16 +18,20 @@ function getConfig<T>(key: string): T {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	if (vscode.env.remoteName === 'ssh-remote' || DEBUG) {
+	outputChannel = vscode.window.createOutputChannel('Remreload');
+	if (vscode.env.remoteName === 'ssh-remote') {
 		log('Starting');
 		let lastCheck = Date.now();
 		interval = setInterval(() => {
 			if (!checkConnectivity) {
 				var now = Date.now();
 				var diff = Math.round((now - lastCheck) / 1000);
-				log(`${diff} secs since last update`);
-				if(diff > getConfig<number>('assumeDisconnectedMinutes') * 60) {
-					console.log('Timeout hit! Will check connectivity');
+				// If the delay was longer than 5 seconds, log it.
+				if (diff > 5) {
+					log(`${(diff / 60).toFixed(2)} minutes since last poll`);
+				}
+				if (diff > getConfig<number>('assumeDisconnectedMinutes') * 60) {
+					log('Timeout hit! Will check connectivity');
 					checkConnectivity = true;
 				}
 				lastCheck = now;
@@ -39,14 +41,14 @@ export function activate(context: vscode.ExtensionContext) {
 			let ping = exec(getConfig<string>('checkConnectivityCommand'));
 			ping.on('close', (code) => {
 				if (code === 0) {
-					console.log('Reloading');
+					log('Reloading');
 					vscode.commands.executeCommand('workbench.action.reloadWindow');
 				}
-				console.log(`Connectivity check command exited with code ${code}`);
+				log(`Connectivity check command exited with code ${code}`);
 			});
 		}, 2000);
-	} else if (vscode.env.remoteName) {
-		log(vscode.env.remoteName!);
+	} else {
+		log('Not activating because this is not a remote workspace: vscode.env.remoteName = ' + vscode.env.remoteName);
 	}
 }
 
