@@ -10,9 +10,13 @@ where it is disconnected and given up (i.e. it's not trying to reconnect again).
 So this extension just uses a heuristic where it polls every few seconds, and if
 the difference in time exceeds a configurable threshold, this means the computer
 has been asleep and we assume SSH is also disconnected. This works well in
-practice for me. You can also configure a connectivity check command to ensure
-that it waits for a network/VPN connection to be established, thus ensuring that
-the reload actually succeeds.
+practice for me.
+
+You can also configure a connectivity check command to ensure that it waits for
+a network/VPN connection to be established, thus ensuring that the reload
+actually succeeds. As an example, set `remreload.checkConnectivityCommand` to
+`ssh -o ConnectTimeout=1 <remote_dest> 'exit'` (replace `<remote_dest>` as
+appropriate).
 
 ## Attribution
 

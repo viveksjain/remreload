@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.3]
+
+ - Log timestamp when starting.
+
 ## [0.0.2]
 
  - Output logs to a new output channel.

@@ -20,7 +20,7 @@ function getConfig<T>(key: string): T {
 export function activate(context: vscode.ExtensionContext) {
 	outputChannel = vscode.window.createOutputChannel('Remreload');
 	if (vscode.env.remoteName === 'ssh-remote') {
-		log('Starting');
+		log(`Starting at ${new Date()}`);
 		let lastCheck = Date.now();
 		interval = setInterval(() => {
 			if (!checkConnectivity) {
@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 					log(`${(diff / 60).toFixed(2)} minutes since last poll`);
 				}
 				if (diff > getConfig<number>('assumeDisconnectedMinutes') * 60) {
-					log('Timeout hit! Will check connectivity');
+					log(`Timeout hit at ${new Date()}! Will check connectivity`);
 					checkConnectivity = true;
 				}
 				lastCheck = now;
